@@ -43,7 +43,7 @@
          </thead>
          <tbody>
             <tr ng-repeat="scooter in scooters | orderBy:sortType:sortReverse">
-               <td>{{ scooter.id }}</td>
+               <td>{{ scooter.public_name }}</td>
                <td>{{ scooter.vehicle_type.name}}</td>
                <td>{{ scooter.batt_pct_smoothed }}%</td>
                <td>{{ scooter.is_charging === true ? "Yes" : "No" }}</td>
