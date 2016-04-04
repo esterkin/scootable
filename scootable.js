@@ -4,7 +4,7 @@ angular.module('scootable', [])
    $scope.sortType = 'id'; 
    $scope.sortReverse = 'false';
 
-   $http.get('https://app.scoot.co/api/v1/scooters.json').
+   $http.get('https://crossorigin.me/https://app.scoot.co/api/v1/scooters.json').
     success(function(data, status, headers, config) {
       $scope.scooters = data.scooters;
     })
