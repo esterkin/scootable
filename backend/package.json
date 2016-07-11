@@ -1,0 +1,10 @@
+{
+    "name": "scootstats",
+    "main": "app.js",
+    "dependencies": {
+        "express": "*",
+        "request": "*",
+        "mongodb": "*",
+        "moment": "*"
+    }
+}
