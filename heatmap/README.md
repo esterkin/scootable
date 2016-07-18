@@ -4,7 +4,8 @@
 
 `npm run dev`
 
-Go to `localhost:8888?access_token=<insert mapbox access token here>`
+Go to `localhost:8888?access_token=<insert mapbox access token here>`.
+Alternatively, set env variable $MapboxAccessToken, start up server, and then go to `localhost:8888`.
 
 
 # References
