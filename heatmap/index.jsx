@@ -2,6 +2,7 @@ require("./node_modules/bootstrap/dist/css/bootstrap.min.css")
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MapGL from 'react-map-gl';
+import ScatterplotOverlay from 'react-map-gl/src/overlays/scatterplot.react';
 
 
 function getAccessToken() {
@@ -24,21 +25,21 @@ function getAccessToken() {
 
 export class App extends React.Component {
 	render() {
-		return (
-		<MapGL
-			width={window.innerWidth} height={window.innerHeight}
-			latitude={37.7577} longitude={-122.4376}
-			zoom={12}
-			mapboxApiAccessToken={getAccessToken()}
-			onChangeViewport={(viewport) => {
-			const {latitude, longitude, zoom} = viewport;
+		return 
+			React.createElement(MapGL,{
+												width: window.innerWidth, 
+												height: window.innerHeight,
+			                  latitude: 37.7577,
+												longitude: -122.4376,
+												zoom: 12,
+												mapboxApiAccessToken: getAccessToken(),
+												onChangeViewport: function(viewport) {
+													const {latitude, longitude, zoom} = viewport;
 			// Optionally call `setState` and use the state to update the map.
-			}}
-		/>
-		//<div>
-		//		This is the app
-		//	</div>
-		);
+			                   }
+				                },
+												React.createElement('h1')
+												 );
 	}
 }
 

@@ -7,11 +7,13 @@ module.exports = [
 		loader: "json-loader"
 	},
 	{
-        test: /use_program\.js$/,
+                test: /use_program\.js$/,
 		loader: 'transform/cacheable?brfs'
 	},
-
-
+	{
+		test: /react\.js$/,
+		loader: 'babel'
+	},
 	{
 		test: /\.jsx?$/,
 		exclude: /(node_modules|bower_components)/,
