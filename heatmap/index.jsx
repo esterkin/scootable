@@ -47,10 +47,7 @@ var App =  React.createClass({
 	  // parse json response
 	  var resp = JSON.parse(xhr.responseText);
 	  var parked = resp.scooters;
-	  console.log(parked);
 	  // update component
-	  console.log(this);
-	  console.log(this.lngLatAccessor);
 	  this.setState({locations: Immutable.fromJS(parked)});
 	}
       }
@@ -64,6 +61,11 @@ var App =  React.createClass({
 
   },
 
+  _onChangeViewport: function _onChangeViewport(viewport) {
+    this.setState({viewport: Object.assign({}, this.state.viewport, viewport)});
+  },
+
+
   getInitialState: function() {
     this.requestData();
 
@@ -74,7 +76,7 @@ var App =  React.createClass({
 	height: window.innerHeight,
 	latitude: location.latitude,
 	longitude: location.longitude,
-	isDragging: false,
+	isDragging: true,
 	zoom: 12,
       },
       locations: Immutable.fromJS([
@@ -93,15 +95,13 @@ var App =  React.createClass({
     return r(MapGL, 
 	     Object.assign(this.state.viewport, {
 		mapboxApiAccessToken: getAccessToken(),
-		onChangeViewport: function(viewport) {
-		const {latitude, longitude, zoom} = viewport;
-		// Optionally call `setState` and use the state to update the map.
-	      }}),
+		onChangeViewport: this._onChangeViewport
+	      }),
 	      r(HeatmapOverlay, 
 		Object.assign(this.state.viewport, {
 		  locations: this.state.locations,
 		  intensityAccessor: (location) => {1 / 10},
-		  sizeAccessor: (location) => 35,
+		  sizeAccessor: (location) => 30,
 		  lngLatAccessor: this.lngLatAccessor
 		}))
 	      );
