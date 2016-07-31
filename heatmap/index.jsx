@@ -13,11 +13,8 @@ var location = {
   longitude:-122.4376
 }
 
-var locations = Immutable.fromJS([
-  [-122.4376, 37.7577], 
-  [-122.4576, 37.7577], 
-  [-122.4276, 37.7577], 
-]);
+
+
 
 
 function getAccessToken() {
@@ -39,8 +36,37 @@ function getAccessToken() {
 
 
 var App =  React.createClass({
+  requestData: function() {
+    // Grab data
+    function handler(){
+      // if complete
+      if (xhr.readyState === 4) {
+	if (xhr.status === 200) {
+	  // parse json response
+	  var resp = JSON.parse(xhr.responseText);
+	  var parked = resp.scooters;
+	  console.log(parked);
+	  // update component
+	  console.log(this);
+	  console.log(this.lngLatAccessor);
+	  this.setState({locations: Immutable.fromJS(parked)});
+	}
+      }
+    }
+
+    var url = "https://crossorigin.me/https://app.scoot.co/api/v1/scooters.json";
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onreadystatechange = handler.bind(this);
+    xhr.send();
+
+  },
+
   getInitialState: function() {
-    return {
+    this.requestData();
+
+    
+    var state = {
       viewport: {
 	width: window.innerWidth, 
 	height: window.innerHeight,
@@ -48,7 +74,17 @@ var App =  React.createClass({
 	longitude: location.longitude,
 	isDragging: false,
 	zoom: 12,
-      }};
+      },
+      locations: Immutable.fromJS([
+	location
+      ])
+    };
+
+    return state;
+  },
+
+  lngLatAccessor: function(location) {
+    return [parseFloat(location.get('longitude')), parseFloat(location.get('latitude'))];
   },
 
   render: function() {
@@ -61,11 +97,12 @@ var App =  React.createClass({
 	      }}),
 	      r(ScatterplotOverlay, 
 		Object.assign(this.state.viewport, {
-		  locations: locations,
-		  dotRadius: 4,
+		  locations: this.state.locations,
+		  dotRadius: 3,
 		  dotFill: "#1FBAD6",
 		  globalOpacity: 1,
-		  compositeOperation: "screen"
+		  compositeOperation: "screen",
+		  lngLatAccessor: this.lngLatAccessor
 		}))
 	      );
   }
