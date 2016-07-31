@@ -3,6 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import MapGL from 'react-map-gl';
 import ScatterplotOverlay from 'react-map-gl/src/overlays/scatterplot.react';
+import HeatmapOverlay from 'react-map-gl-heatmap-overlay';
+
 import Immutable from 'immutable';
 
 var r = React.createElement;
@@ -95,13 +97,11 @@ var App =  React.createClass({
 		const {latitude, longitude, zoom} = viewport;
 		// Optionally call `setState` and use the state to update the map.
 	      }}),
-	      r(ScatterplotOverlay, 
+	      r(HeatmapOverlay, 
 		Object.assign(this.state.viewport, {
 		  locations: this.state.locations,
-		  dotRadius: 3,
-		  dotFill: "#1FBAD6",
-		  globalOpacity: 1,
-		  compositeOperation: "screen",
+		  intensityAccessor: (location) => {1 / 10},
+		  sizeAccessor: (location) => 35,
 		  lngLatAccessor: this.lngLatAccessor
 		}))
 	      );

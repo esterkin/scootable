@@ -10,6 +10,12 @@ module.exports = [
                 test: /use_program\.js$/,
 		loader: 'transform/cacheable?brfs'
 	},
+
+	// specifically for vicapow/react-map-gl-heatmap-overlay
+	{
+                test: /webgl-heatmap\/.*\.js$/,
+		loader: 'transform/cacheable?brfs'
+	},
 	{
 		test: /react\.js$/,
 		loader: 'babel'
