@@ -15,11 +15,12 @@ request({
 	if (!error && response.statusCode === 200) {
 
       // push json to mongodb
-      var now = moment(new Date()).format("MMDDYYYYHH");
+	  // TODO check if this is UTC
+      var now = moment().unix();
 
       MongoClient.connect(mongodb_uri, function(err, db) {
       	var scootstats = db.collection('scootstats');
-     	scootstats.insert({ _id: now , data: body})
+     	scootstats.insert({ _id: now , data: body});
       	db.close();
       });
   }
