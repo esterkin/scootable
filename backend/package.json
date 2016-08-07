@@ -1,10 +1,11 @@
 {
-    "name": "scootstats",
-    "main": "server.js",
-    "dependencies": {
-        "express": "*",
-        "request": "*",
-        "mongodb": "*",
-        "moment": "*"
-    }
+  "name": "scootstats",
+  "main": "server.js",
+  "dependencies": {
+    "config": "^1.21.0",
+    "express": "*",
+    "moment": "*",
+    "mongodb": "*",
+    "request": "*"
+  }
 }

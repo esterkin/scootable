@@ -1,7 +1,7 @@
 var request = require("request");
 var MongoClient = require('mongodb').MongoClient;
 var moment = require("moment");
-var config = require("./config");
+var config = require("./config/config");
 
 
 var scootApiEndpoint = config.scootApiEndpoint;

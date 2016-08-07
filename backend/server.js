@@ -1,10 +1,21 @@
 var express = require('express');
-var config = require('./config');
+var config = require('config');
 
 var app = express();
-var port = process.env.PORT || 8080; 
+var port = process.env.PORT || 8080;
+
+
+
 var MongoClient = require('mongodb').MongoClient;
-var mongodb_url = config.mongoDbUri;
+
+var dbHost = config.get('db.host');
+var dbPort = config.get('db.port');
+
+var clientHost = config.get('client.host');
+var clientPort = config.get('client.port');
+
+var mongodb_url = "mongodb://" + dbHost + ":" + dbPort;
+var client_url = "http://" + clientHost + ":" + clientPort;
 
 
 // TODO 
@@ -22,6 +33,8 @@ app.get("/locations", function(req,res){
 			opts.limit = limit;
 		}
 
+		// TODO
+		// - reverse by _id, have the latest timestamp show up first in list
 		scootstats.find({}, opts, function(err, cursor){
 
 			cursor.toArray(function(err,items){
@@ -40,6 +53,8 @@ app.get("/locations", function(req,res){
 						return {_id: item._id, locations: locations};
 					});
 
+					// set headers
+					res.set('Access-Control-Allow-Origin', client_url);
 					res.json({"status": "success", "data": data});
 				} else {
 					res.json({"status": "error", "data": {}});
@@ -52,4 +67,5 @@ app.get("/locations", function(req,res){
 	});
 });
 
+console.log("Listening on port " + port);
 app.listen(port);

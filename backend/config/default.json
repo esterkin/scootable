@@ -1,0 +1,12 @@
+{
+  "scootApiEndpoint": "https://crossorigin.me/https://app.scoot.co/api/v1/scooters.json",
+  "db": {
+    "host": "localhost",
+    "port": ""
+  },
+  "client": {
+    "host": "localhost",
+    "port": ""
+  }
+}
+
