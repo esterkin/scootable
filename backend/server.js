@@ -57,11 +57,12 @@ app.get("/locations", function(req,res){
 					res.set('Access-Control-Allow-Origin', client_url);
 					res.json({"status": "success", "data": data});
 				} else {
-					res.json({"status": "error", "data": {}});
+					console.log(err);
+					res.json({"status": "error", "err": err});
 				}
+				db.close();
 			});
 
-			db.close();
 
 		});
 	});
