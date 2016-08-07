@@ -45,8 +45,8 @@ app.get("/locations", function(req,res){
 						// only output the longitude/latitude
 						var locations = scooters.map(function(scooter) {
 							return {
-								longitude: scooter.longitude,
-								latitude: scooter.latitude
+								long: scooter.longitude,
+								lat: scooter.latitude
 							};
 						});
 

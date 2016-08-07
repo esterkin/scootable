@@ -101,7 +101,7 @@ var App = React.createClass({
     },
 
     lngLatAccessor: function (location) {
-        return [parseFloat(location.get('longitude')), parseFloat(location.get('latitude'))];
+        return [parseFloat(location.get('long')), parseFloat(location.get('lat'))];
     },
 
     changeIntervalIdx: function(i) {
@@ -129,10 +129,8 @@ var App = React.createClass({
                 r(HeatmapOverlay,
                     Object.assign(this.state.viewport, {
                         locations: Immutable.fromJS(this.state.intervals[this.state.interval_idx].locations),
-                        intensityAccessor: (location) => {
-                            1 / 10
-                        },
-                        sizeAccessor: (location) => 30,
+                        intensityAccessor: (location) => 1 / 4,
+                        sizeAccessor: (location) => 20,
                         lngLatAccessor: this.lngLatAccessor
                     })
                 )
