@@ -8,10 +8,9 @@ import styles from './slider.css';
 import React from 'react';
 var r = React.createElement;
 
-// TODO disable map scrolling when sliding button
 
 // Invariant:
-// - this.props.ts_size has to be >= 2
+// - this.props.ts_size has to be >= 1
 var Slider = React.createClass({
 
     getInitialState: function() {
@@ -22,7 +21,6 @@ var Slider = React.createClass({
     },
 
     handleChange: function (event) {
-        // TODO update parent state (App)
         var new_idx = event.target.value;
 
         this.setState({value: new_idx});
@@ -62,17 +60,5 @@ var Slider = React.createClass({
     }
 });
 
-//<input type="range" name="slider-time" id="slider-time"
-//    min="0" max="100" step="10"
-//    list="timesteps"
-///>
-//<datalist id="timesteps">
-//<option>0</option>
-//<option>20</option>
-//<option>40</option>
-//<option>60</option>
-//<option>80</option>
-//<option>100</option>
-//</datalist>
 
 export default Slider;
