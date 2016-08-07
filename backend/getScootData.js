@@ -1,11 +1,13 @@
 var request = require("request");
 var MongoClient = require('mongodb').MongoClient;
 var moment = require("moment");
-var config = require("./config/config");
+var config = require('config');
 
+var dbHost = config.get('db.host');
+var dbPort = config.get('db.port');
 
 var scootApiEndpoint = config.scootApiEndpoint;
-var mongodb_uri = config.mongoDbUri;
+var mongodb_uri = "mongodb://" + dbHost + ":" + dbPort;
 
 request({
 	url: scootApiEndpoint,
