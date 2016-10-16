@@ -41,8 +41,31 @@ function getAccessToken() {
 }
 
 
-var App = React.createClass({
-    requestData: function () {
+class App extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.requestData();
+
+        this.state = {
+            viewport: {
+                width: window.innerWidth,
+                height: window.innerHeight,
+                latitude: default_location.latitude,
+                longitude: default_location.longitude,
+                isDragging: true,
+                zoom: 12
+            },
+
+            intervals: [default_interval],
+            interval_idx: 0
+        }
+        this._onChangeViewport = this._onChangeViewport.bind(this);
+        this.requestData = this.requestData.bind(this);
+        this.changeIntervalIdx = this.changeIntervalIdx.bind(this);
+    }
+
+    requestData() {
         // Grab data
         function handler() {
             // if complete
@@ -70,44 +93,23 @@ var App = React.createClass({
         xhr.open('GET', url);
         xhr.onreadystatechange = handler.bind(this);
         xhr.send();
+    }
 
-    },
-
-    _onChangeViewport: function (viewport) {
+    _onChangeViewport(viewport) {
         this.setState({viewport: Object.assign({}, this.state.viewport, viewport)});
-    },
+    }
 
 
-    getInitialState: function () {
-        this.requestData();
-
-
-        var state = {
-            viewport: {
-                width: window.innerWidth,
-                height: window.innerHeight,
-                latitude: default_location.latitude,
-                longitude: default_location.longitude,
-                isDragging: true,
-                zoom: 12
-            },
-
-            intervals: [default_interval],
-            interval_idx: 0
-        };
-
-        return state;
-    },
-
-    lngLatAccessor: function (location) {
+    lngLatAccessor(location) {
         return [parseFloat(location.get('long')), parseFloat(location.get('lat'))];
-    },
+    }
 
-    changeIntervalIdx: function(i) {
+    // might have to bind 'this'
+    changeIntervalIdx(i) {
        this.setState({interval_idx: i});
-    },
+    }
 
-    render: function () {
+    render() {
         var sliderComp;
 
         if (this.state.intervals.length < 2) {
@@ -137,6 +139,6 @@ var App = React.createClass({
             sliderComp
         );
     }
-});
+}
 
 ReactDOM.render(<App/>, document.querySelector("#myApp"));
