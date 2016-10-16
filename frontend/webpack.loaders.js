@@ -16,10 +16,15 @@ module.exports = [
         test: /webgl-heatmap\/.*\.js$/,
         loader: 'transform/cacheable?brfs'
     },
+
+
+    // target react.js files in node_modules
     {
         test: /react\.js$/,
         loader: 'babel'
     },
+
+    // target all js files in project.
     {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,

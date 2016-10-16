@@ -11,30 +11,32 @@ var r = React.createElement;
 
 // Invariant:
 // - this.props.ts_size has to be >= 1
-var Slider = React.createClass({
+export default class Slider extends React.Component {
 
-    getInitialState: function() {
-
-        return {
-            value: this.props.ts_size-1
+    constructor(props) {
+        super(props);
+        this.state = {
+            value: props.ts_size-1
         };
-    },
+        this.handleChange = this.handleChange.bind(this);
 
-    handleChange: function (event) {
+}
+    handleChange(event) {
         var new_idx = event.target.value;
+        console.log(event);
 
         this.setState({value: new_idx});
         this.props.changeIntervalIdx(new_idx);
-    },
+    }
 
     // make this dynamic, and based on locations.length
-    stepOptions: (n) => {
+    stepOptions(n)  {
         return [...Array(n+1).keys()].map((_,i) => {
           return r('option', {}, (i).toString());
         });
-    },
+    }
 
-    render: function () {
+    render() {
        return r('div', {className: styles.layout},
            r('label', {htmlFor:"slider-time"}),
            r('input',
@@ -58,7 +60,6 @@ var Slider = React.createClass({
            )
        );
     }
-});
+}
 
 
-export default Slider;

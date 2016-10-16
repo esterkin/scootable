@@ -4,7 +4,6 @@ import styles from './main.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import MapGL from 'react-map-gl';
-import ScatterplotOverlay from 'react-map-gl/src/overlays/scatterplot.react';
 import HeatmapOverlay from 'react-map-gl-heatmap-overlay';
 
 import Slider from './Slider';
