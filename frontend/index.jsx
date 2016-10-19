@@ -88,7 +88,7 @@ class App extends React.Component {
             }
         }
 
-        var url = "http://localhost:8080/locations";
+        var url = "http://localhost:8080/locations?n=1440";
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url);
         xhr.onreadystatechange = handler.bind(this);
