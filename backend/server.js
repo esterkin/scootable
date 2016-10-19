@@ -1,18 +1,21 @@
 var express = require('express');
-var config = require('config');
 
 var app = express();
-var port = process.env.PORT || 8080;
 
+var config = require('./config.json')[process.env.NODE_ENV || 'development'];
+
+var dbHost = config.db.host;
+var dbPort = config.db.port;
+
+
+
+var port = process.env.PORT || config.server.port || 8080;
+
+var clientHost = config.client.host;
+var clientPort = config.client.port;
 
 
 var MongoClient = require('mongodb').MongoClient;
-
-var dbHost = config.get('db.host');
-var dbPort = config.get('db.port');
-
-var clientHost = config.get('client.host');
-var clientPort = config.get('client.port');
 
 var mongodb_url = "mongodb://" + dbHost + ":" + dbPort;
 var client_url = "http://" + clientHost + ":" + clientPort;
