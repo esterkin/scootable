@@ -1,6 +1,9 @@
 var webpack = require('webpack');
 var path = require('path');
+
 var loaders = require('./webpack.loaders');
+var postLoaders = require('./webpack.postLoaders');
+
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
@@ -15,7 +18,11 @@ module.exports = {
 		extensions: ['', '.js', '.jsx']
 	},
 	module: {
-		loaders: loaders
+		loaders: loaders,
+
+        // For integrating w/ mapbox-gl-js
+        //https://github.com/uber/react-map-gl/issues/21
+        postLoaders: postLoaders
 	},
 	plugins: [
 		new CopyWebpackPlugin([

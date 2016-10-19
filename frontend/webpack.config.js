@@ -2,6 +2,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var loaders = require('./webpack.loaders');
+var postLoaders = require('./webpack.postLoaders');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const HOST = process.env.HOST || "0.0.0.0";
@@ -31,13 +32,7 @@ module.exports = {
 
 		// For integrating w/ mapbox-gl-js
 		//https://github.com/uber/react-map-gl/issues/21
-		postLoaders: [
-			{
-				include: /node_modules\/mapbox-gl/,
-				loader: 'transform',
-				query: 'brfs'
-			}
-		]
+		postLoaders: postLoaders
 	},
 	devServer: {
 		contentBase: "./public",
