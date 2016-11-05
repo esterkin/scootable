@@ -1,17 +1,25 @@
+var pg = require('pg');
 var request = require("request");
-var MongoClient = require('mongodb').MongoClient;
 var moment = require("moment");
-var config = require('config');
+var config = require('./config.json')[process.env.NODE_ENV || 'development'];
+var scootApiEndpoint = config.scootApiEndpoint;
 
-var dbHost = config.get('db.host');
-var dbPort = config.get('db.port');
+var pgConfig = {
+  user: config.db.user, 
+  database: config.db.name,
+  password: config.db.password,
+  host: config.db.host,
+  port: config.db.port,
+  max: 10, // max number of clients in the pool
+  idleTimeoutMillis: 30000, // how long a client is allowed to remain idle before being closed
+};
 
-var scootApiEndpoint = config.get('scootApiEndpoint');
-var mongodb_uri = "mongodb://" + dbHost + ":" + dbPort;
 
+var pool = new pg.Pool(pgConfig);
 
-var minutes = 1, the_interval = minutes * 60 * 1000;
-setInterval(function () {
+// TODO promisify everything
+
+function insertData() {
     var ts_str = (new Date()).toUTCString();
     console.log(ts_str);
 
@@ -23,18 +31,52 @@ setInterval(function () {
 
         if (!error && response.statusCode === 200) {
 
-            // push json to mongodb
-            // TODO check if this is UTC
-            var now = moment().unix();
+            pool.connect(function (err, client, done) {
+                if(err) {
+                    return console.error('error fetching client from pool', err);
+                }
 
-            MongoClient.connect(mongodb_uri, function (err, db) {
-                var scootstats = db.collection('scootstats');
-                scootstats.insert({_id: now, data: body});
-                db.close();
+                var queryStr = 'INSERT INTO snapshot (data) VALUES ($1::jsonb)';
+
+                client.query(queryStr, [body], function(err, result) {
+                    //call `done()` to release the client back to the pool
+                    done();
+
+                    if(err) {
+                        return console.error('error running query', err);
+                    }
+
+                    console.log(ts_str + ": Inserted data");
+                    console.log(result);
+                    //output: 1
+                });
+
             });
+
         } else {
-            console.log(error);
-            console.log(response.statusCode);
+            console.error(error);
+            console.error(response.statusCode);
         }
     });
-}, the_interval);
+}
+
+pool.on('error', function (err, client) {
+    // if an error is encountered by a client while it sits idle in the pool
+    // the pool itself will emit an error event with both the error and
+    // the client which emitted the original error
+    // this is a rare occurrence but can happen if there is a network partition
+    // between your application and the database, the database restarts, etc.
+    // and so you might want to handle it and at least log it out
+    console.error('idle client error', err.message, err.stack)
+})
+
+
+
+
+
+
+var minutes = 1; 
+var the_interval = minutes * 60 * 1000;
+
+insertData();
+setInterval(insertData, the_interval);

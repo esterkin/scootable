@@ -6,5 +6,8 @@
     "moment": "*",
     "mongodb": "*",
     "request": "*"
+  },
+  "devDependencies": {
+    "pg": "^6.1.0"
   }
 }
